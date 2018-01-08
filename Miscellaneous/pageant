@@ -1,0 +1,45 @@
+r = open("pageant.in", "r")
+w = open("pageant.out", "w")
+nm = r.readline().split()
+N, M = int(nm[0]), int(nm[1])
+pattern = [[0 for x in range(M)] for y in range(N)]
+for i in range(M):
+   one_line = r.readline().strip()
+   for j in range(len(one_line)):
+       pattern[i][j] = one_line[j]
+
+
+def is_connected(point, spots_list):
+   for i in range(3):
+       for second in spots_list[i]:
+           x_diff = point[0] - second[0]
+           y_diff = point[1] - second[1]
+           if (y_diff == 0 and (x_diff == -1 or x_diff == 1)) or (x_diff == 0 and (y_diff == -1 or y_diff == 1)):
+               return True, i
+   else:
+       return False, -1
+
+
+def find_spots(spots_list, pattern):
+   spots_found = 0
+   for x in range(N):
+       for y in range(M):
+           character = pattern[x][y]
+           if character == "X":
+               value = is_connected((x, y), spots_list)
+               if value[0]:
+                   spots_list[value[1]].append((x, y))
+               elif spots_found < 3:
+                   spots_list[spots_found].append((x,y))
+                   spots_found += 1
+   return spots_list
+
+spots = [[],[],[]]
+spots = find_spots(spots, pattern)
+for i in spots[0]:
+   print("first spot!", i)
+for i in spots[1]:
+   print("second spot!", i)
+for i in spots[2]:
+   print("thrid spot!", i)
+for
